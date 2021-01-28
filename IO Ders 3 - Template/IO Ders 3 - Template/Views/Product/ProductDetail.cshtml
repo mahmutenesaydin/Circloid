@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Ürün Detay";
+}
+
+@using IO_Ders_3___Template.Models;
+@model Product
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="block">
+            <div class="block-heading">
+                <div class="main-text h2">
+                    Ürünler
+                </div>
+                <div class="block-controls">
+                    <span aria-hidden="true" class="icon icon-arrow-down icon-size-medium block-control-collapse"></span>
+                    <a href="/Product/AddProduct" class="btn btn-success rounded">Yeni Ürün</a>
+                </div>
+            </div>
+            <div class="block-content-outer">
+                <div class="block-content-inner">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ürün Adı</th>
+                                <th>Tedarikçi</th>
+                                <th>Kategori</th>
+                                <th>Fiyat</th>
+                                <th>Stok</th>
+                                <th>Sonlandı</th>
+                                <th>Sil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                                <tr>
+                                    <td>@Model.ProductName</td>
+                                    @if (Model.Supplier == null)
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="label label-primary">@Model.Supplier.CompanyName</span></td>
+                                    }
+                                    <td><span class="label label-info">@Model.CategoryID</span></td>
+                                    <td>@Model.UnitPrice</td>
+                                    <td>@Model.UnitsInStock</td>
+                                    @if (Model.Discontinued)
+                                    {
+                                        <td><span class="label label-danger">Stokta Yok</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="label label-success">Stokta Var</span></td>
+                                    }
+                                    <td><a href="/Product/DeleteProduct/@Model.ProductID" class="btn btn-danger rounded">Sil</a></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

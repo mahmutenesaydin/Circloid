@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "Ürünler";
+}
+
+@using IO_Ders_3___Template.Models
+@model List<Product>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="block">
+            <div class="block-heading">
+                <div class="main-text h2">
+                    Ürünler
+                </div>
+                <div class="block-controls">
+                    <span aria-hidden="true" class="icon icon-arrow-down icon-size-medium block-control-collapse"></span>
+                    <a href="/Product/AddProduct" class="btn btn-success rounded">Yeni Ürün</a>
+                </div>
+            </div>
+            <div class="block-content-outer">
+                <div class="block-content-inner">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ürün Adı</th>
+                                <th>Tedarikçi</th>
+                                <th>Kategori</th>
+                                <th>Fiyat</th>
+                                <th>Stok</th>
+                                <th>Sonlandı</th>
+                                <th>Sepete Ekle</th>
+                                <th>Detay</th>
+                                <th>Sil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Product p in Model)
+                            {
+                                <tr>
+                                    <td>@p.ProductName</td>
+                                    @if (p.Supplier == null)
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="label label-primary">@p.Supplier.CompanyName</span></td>
+                                    }
+                                    <td><span class="label label-info">@p.CategoryID</span></td>
+                                    <td>@p.UnitPrice</td>
+                                    <td>@p.UnitsInStock</td>
+                                    @if (p.Discontinued)
+                                    {
+                                        <td><span class="label label-danger">Stokta Yok</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="label label-success">Stokta Var</span></td>
+                                    }
+                                    <td><a class="btn btn-default addtoBasket" data-id="@p.ProductID" href="#">Sepete Ekle</a></td>
+                                    <td><a class="btn btn-primary" href="/Product/ProductDetail/?id=@p.ProductID&adi=@p.ProductName">Detay</a></td>
+                                    <td><a href="/Product/DeleteProduct/@p.ProductID" class="btn btn-danger rounded">Sil</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(".addtoBasket").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/Product/AddToBasket/" + id,
+                success: function () {
+                    alert("Ürün Sepete Eklendi.");
+                },
+                error: function () {
+                    alert("Ürün Sepete Eklenirken Bir Hata Oluştu, Tekrar Deneyiniz");
+                }
+            });
+        });
+    </script>
+}
